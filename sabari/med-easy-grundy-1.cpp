@@ -1,10 +1,10 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : easy-1.cpp
+* File Name : med-easy-grundy.cpp
 
 * Creation Date : 23-12-2013
 
-* Last Modified : Monday 23 December 2013 11:17:07 PM IST
+* Last Modified : Tuesday 24 December 2013 12:10:59 AM IST
 
 * Created By : npsabari
 
@@ -53,7 +53,7 @@ using namespace std;
 #define sqr(x) ((x)*(x))
 
 #define MOD 1000000007
-#define MAXN 100010
+#define MAXN 110
 #define MAXBUF 5000000
 #define EPS 1e-9
 #define NIL 0
@@ -92,50 +92,38 @@ using namespace std;
 #define READ(f) freopen(f, "r", stdin)
 #define WRITE(f) freopen(f, "w", stdout)
 
-#define MAXL 1000000000000000000LL // Check for overflowuu
 #define debug
 
-ll pow(ll a, int k) {
-    ll ret = 1;
-    ll aa = a;
-    while(k) {
-        if(k&1) ret *= a;
-#ifdef debug
-        if(a > MAXL || a < 0) assert(false);
-#endif
-        k >>= 1; a *= a;
-    }
-    return ret;
-}
+ll c_i[MAXN], P_i[MAXN], C_i[MAXN];;
 
-bool a_check(ll& num, int& b) {
-    ll hi = pow(2, ceil(log2(num)/b)), lo = 2;
-    ll m = (hi+lo)>>1;
-    int iter = 35;
-    ll tmp_pow;
-    while(iter-- && lo < hi) {
-        m = (lo+hi)>>1;
-        tmp_pow = pow(m, b);
-        if(tmp_pow == num) return true;
-        if(tmp_pow < num) lo = m;
-        else hi = m;
-    }
-    return pow(lo, b) == num || pow(hi, b) == num;
-}
-
-bool a_b_check(ll& num) {
-    int end = log2(num) + 1;
-    FORab(b, 2, end) if(a_check(num, b)) return true;
-    return false;
+ll get_grundy(ll num){
+    if(num < 3) return 0;
+    if(num%3 == 0) return num/3;
+    else return get_grundy(num-num/3-1);
 }
 
 int main() {
-    int t;
-    ll n;
-    cin>>t;
+    int t, n;
+    ll grundy;
+    scanf("%d", &t);
     while(t--) {
-        cin>>n;
-        cout<<(a_b_check(n) ? "YES" : "NO")<<endl;
+        scanf("%d", &n);
+        REP(i, n) scanf("%lld", c_i+i);
+        REP(i, n) scanf("%lld", P_i+i);
+        // Transforming to good old n-piles game, with removing coins as action
+        REP(i, n) {
+#ifdef debug
+            assert(P_i[i] >= c_i[i]);
+#endif
+            C_i[i] = P_i[i] - c_i[i];
+        }
+        
+        // Computing XORs
+        grundy = 0;
+        REP(i, n) grundy ^= get_grundy(C_i[i]);
+
+        //According the Grundy number theorem, iff grundy = 0, it is a losing position
+        printf("%s\n", grundy == 0 ? "NO" : "YES");
     }
 	return 0;
 }
