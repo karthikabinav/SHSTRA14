@@ -4,7 +4,7 @@
 
 * Creation Date : 23-12-2013
 
-* Last Modified : Monday 23 December 2013 07:53:46 PM IST
+* Last Modified : Monday 23 December 2013 08:00:24 PM IST
 
 * Created By : npsabari
 
@@ -104,7 +104,7 @@ ll pow(ll a, int k) {
 bool a_check(ll& num, int& b) {
     ll hi = num, lo = 0;
     ll m = (hi+lo)>>1;
-    int iter = 70;
+    int iter = 35;
     ll tmp_pow;
     while(iter-- && lo != hi) {
         m = (lo+hi)>>1;
