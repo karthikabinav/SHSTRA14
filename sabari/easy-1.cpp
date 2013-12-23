@@ -4,7 +4,7 @@
 
 * Creation Date : 23-12-2013
 
-* Last Modified : Monday 23 December 2013 08:00:24 PM IST
+* Last Modified : Monday 23 December 2013 08:41:04 PM IST
 
 * Created By : npsabari
 
@@ -92,17 +92,27 @@ using namespace std;
 #define READ(f) freopen(f, "r", stdin)
 #define WRITE(f) freopen(f, "w", stdout)
 
+#define MAXE 1000000000LL // This must be the max value of input n
+#define debug
+
 ll pow(ll a, int k) {
     ll ret = 1;
+    ll aa = a;
     while(k) {
+        if(a > MAXE) {
+#ifdef debug
+            cout<<"Base "<<aa<<" Overflowing "<<endl; 
+#endif
+            return -1; // Overflow - Buggy fix. 
+        } 
         if(k&1) ret *= a;
-        k>>=1; a*= a;
+        k>>=1; a *= a;
     }
     return ret;
 }
 
 bool a_check(ll& num, int& b) {
-    ll hi = num, lo = 0;
+    ll hi = sqrt(num)+1, lo = 2;
     ll m = (hi+lo)>>1;
     int iter = 35;
     ll tmp_pow;
@@ -110,7 +120,7 @@ bool a_check(ll& num, int& b) {
         m = (lo+hi)>>1;
         tmp_pow = pow(m, b);
         if(tmp_pow == num) return true;
-        if(tmp_pow < num) lo = m;
+        if(tmp_pow > 0 && tmp_pow < num) lo = m;
         else hi = m;
     }
     return pow(m, b) == num;
