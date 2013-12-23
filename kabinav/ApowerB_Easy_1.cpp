@@ -1,8 +1,6 @@
 #include <cstdio>
 #include <cmath>
-#include <iostream>
 
-using namespace std;
 
 long long power(long long a, long long b)
 {
@@ -50,7 +48,7 @@ int main()
                 if(ans == n)
                 {
                     printf("YES\n");
-                    printf("%lld %lld\n",mid,i);
+                   // printf("%lld %lld\n",mid,i);
                     found = true;
                     break;
                 
