@@ -1,5 +1,8 @@
 #include <cstdio>
 #include <cmath>
+#include <iostream>
+
+using namespace std;
 
 long long power(long long a, long long b)
 {
@@ -29,15 +32,21 @@ int main()
         
         long long i;
         bool found = false;
-        for(i=2;i<=(long long)log2(n) && !found;i++)
+        for(i=2;i<=(long long)(ceil(log2(n))+0.5) && !found;i++)
         {
             long long l = 2;
-            long long r = n;
+            long long r = (1LL<<((long long)(ceil(log2(n)/i)+0.5)));
             long long mid = (l+r)/2;
-
+            
             while(l<=r)
             {
                 long long ans = power(mid,i);
+                if(ans<0) // Special fix for overflow
+                {
+                    r = mid-1;
+                    mid = (l+r)/2;
+                    continue;
+                }
                 if(ans == n)
                 {
                     printf("YES\n");
