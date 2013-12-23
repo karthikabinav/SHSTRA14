@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cmath>
 
+
 long long power(long long a, long long b)
 {
     if(b == 0)
@@ -32,12 +33,18 @@ int main()
         for(i=2;i<=(long long)log2(n) && !found;i++)
         {
             long long l = 2;
-            long long r = n;
+            long long r = (long long)pow(2,log2(n)/i+1);
             long long mid = (l+r)/2;
 
             while(l<=r)
             {
                 long long ans = power(mid,i);
+                if(ans<0) // Special fix for overflow
+                {
+                    r = mid-1;
+                    mid = (l+r)/2;
+                    continue;
+                }
                 if(ans == n)
                 {
                     printf("YES\n");
