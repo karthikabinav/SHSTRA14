@@ -4,7 +4,7 @@
 
 * Creation Date : 23-12-2013
 
-* Last Modified : Monday 23 December 2013 08:41:04 PM IST
+* Last Modified : Monday 23 December 2013 10:17:54 PM IST
 
 * Created By : npsabari
 
@@ -92,42 +92,39 @@ using namespace std;
 #define READ(f) freopen(f, "r", stdin)
 #define WRITE(f) freopen(f, "w", stdout)
 
-#define MAXE 1000000000LL // This must be the max value of input n
+#define MAXL 1000000000000000000LL // Check for overflowuu
 #define debug
 
 ll pow(ll a, int k) {
     ll ret = 1;
     ll aa = a;
     while(k) {
-        if(a > MAXE) {
-#ifdef debug
-            cout<<"Base "<<aa<<" Overflowing "<<endl; 
-#endif
-            return -1; // Overflow - Buggy fix. 
-        } 
         if(k&1) ret *= a;
+#ifdef debug
+        if(a > MAXL) assert(false);
+#endif
         k>>=1; a *= a;
     }
     return ret;
 }
 
 bool a_check(ll& num, int& b) {
-    ll hi = sqrt(num)+1, lo = 2;
+    ll hi = pow(2, ceil(log2(num)/b)), lo = 2;
     ll m = (hi+lo)>>1;
     int iter = 35;
     ll tmp_pow;
-    while(iter-- && lo != hi) {
+    while(iter-- && lo < hi) {
         m = (lo+hi)>>1;
         tmp_pow = pow(m, b);
         if(tmp_pow == num) return true;
-        if(tmp_pow > 0 && tmp_pow < num) lo = m;
+        if(tmp_pow < num) lo = m;
         else hi = m;
     }
-    return pow(m, b) == num;
+    return pow(lo, b) == num || pow(hi, b) == num;
 }
 
 bool a_b_check(ll& num) {
-    int end = log(num)/log(2) + 1;
+    int end = log2(num) + 1;
     FORab(b, 2, end) if(a_check(num, b)) return true;
     return false;
 }
@@ -138,7 +135,7 @@ int main() {
     cin>>t;
     while(t--) {
         cin>>n;
-        cout<<(a_b_check(n) ? "Yes" : "No")<<endl;
+        cout<<(a_b_check(n) ? "YES" : "NO")<<endl;
     }
 	return 0;
 }
