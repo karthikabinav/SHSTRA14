@@ -4,7 +4,7 @@
 
 * Creation Date : 23-12-2013
 
-* Last Modified : Tuesday 24 December 2013 12:10:59 AM IST
+* Last Modified : Tuesday 24 December 2013 12:52:22 AM IST
 
 * Created By : npsabari
 
@@ -53,7 +53,7 @@ using namespace std;
 #define sqr(x) ((x)*(x))
 
 #define MOD 1000000007
-#define MAXN 110
+#define MAXN 1010
 #define MAXBUF 5000000
 #define EPS 1e-9
 #define NIL 0
@@ -92,14 +92,12 @@ using namespace std;
 #define READ(f) freopen(f, "r", stdin)
 #define WRITE(f) freopen(f, "w", stdout)
 
-#define debug
-
 ll c_i[MAXN], P_i[MAXN], C_i[MAXN];;
 
-ll get_grundy(ll num){
-    if(num < 3) return 0;
-    if(num%3 == 0) return num/3;
-    else return get_grundy(num-num/3-1);
+ll get_grundy(ll num, int idx){
+    if(num < idx) return 0;
+    if(num%idx == 0) return num/idx;
+    else return get_grundy(num-num/idx-1, idx);
 }
 
 int main() {
@@ -108,19 +106,17 @@ int main() {
     scanf("%d", &t);
     while(t--) {
         scanf("%d", &n);
-        REP(i, n) scanf("%lld", c_i+i);
-        REP(i, n) scanf("%lld", P_i+i);
+        FOR1(i, n) scanf("%lld", c_i+i);
+        FOR1(i, n) scanf("%lld", P_i+i);
         // Transforming to good old n-piles game, with removing coins as action
-        REP(i, n) {
-#ifdef debug
+        FOR1(i, n) {
             assert(P_i[i] >= c_i[i]);
-#endif
             C_i[i] = P_i[i] - c_i[i];
         }
         
         // Computing XORs
         grundy = 0;
-        REP(i, n) grundy ^= get_grundy(C_i[i]);
+        FOR1(i, n) grundy ^= get_grundy(C_i[i], i);
 
         //According the Grundy number theorem, iff grundy = 0, it is a losing position
         printf("%s\n", grundy == 0 ? "NO" : "YES");
