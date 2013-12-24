@@ -4,7 +4,7 @@
 
 * Creation Date : 24-12-2013
 
-* Last Modified : Tuesday 24 December 2013 01:16:24 PM IST
+* Last Modified : Tuesday 24 December 2013 01:23:22 PM IST
 
 * Created By : npsabari
 
@@ -52,7 +52,7 @@ using namespace std;
 #define abs(x) ((x)<0?-(x):(x))
 #define sqr(x) ((x)*(x))
 
-#define MOD 1000000007
+#define MOD 1000000003
 #define MAXN 18 
 #define MAXBUF 5000000
 #define EPS 1e-9
