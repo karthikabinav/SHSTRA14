@@ -1,7 +1,7 @@
 #include <cstdio>
 
 #define MAX 15
-#define mod 1000000000 //RG mod
+#define mod 1000000003 //RG mod
 
 long long permanent(int mat[MAX][MAX],int n)
 {
