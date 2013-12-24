@@ -1,7 +1,7 @@
 #include <cstdio>
 
 #define MAX 15
-#define mod 1000000007
+#define mod 1000000000 //RG mod
 
 long long permanent(int mat[MAX][MAX],int n)
 {
@@ -30,17 +30,17 @@ long long permanent(int mat[MAX][MAX],int n)
                   inSum+=mat[i][j];
               }
           }
-          outPro = (outPro*inSum)%mod;
+          outPro = (outPro*inSum);
       }
       if(modS%2 == 0)
-        ans = (ans + outPro)%mod;
+        ans = (ans + outPro);
       else
-        ans = ((ans - outPro)%mod + mod)%mod;
+        ans = (ans - outPro);
       sub++;    
     }
     if(n%2 == 0)
       return ans;
-    return ((-1*ans)%mod+mod)%mod;
+    return (-1*ans);
 }
 
 //Input vertices numbered from 0 to n-1 on the LHS and n to 2*n-1 on RHS
@@ -71,6 +71,6 @@ int main()
             mat[u][v-n] = 1;
         }
         
-        printf("%lld\n",permanent(mat,n));
+        printf("%lld\n",permanent(mat,n)%mod);
     }
 }

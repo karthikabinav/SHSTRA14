@@ -27,36 +27,29 @@ int main()
         {
             long long r;
             r = c_i[i];
-
+            
+            long long cur_div = i+1;
             while(true)
             {
-                if(r == 1)
+                if(r<cur_div)
                 {
                     cnt^=0;
                     break;
                 }
-                if(r==2)
+              
+                if(r%cur_div == 0)
                 {
-                    cnt^=0;
-                    break;
-                }
-                if(r%3 == 0)
-                {
-                    cnt^=(r/3);
+                    cnt^=(r/cur_div);
                     break;
                 
                 }
                 else
-                    r = r-((r/3)+1);
+                    r = r-(r/cur_div+1);
             }
         }
         if(cnt!=0)
           printf("YES\n");
         else
           printf("NO\n");
-    
-    
-    
-    
     }
 }
