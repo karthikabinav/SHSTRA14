@@ -1,10 +1,10 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : easy-1.cpp
+* File Name : med-easy-perm.cpp
 
-* Creation Date : 23-12-2013
+* Creation Date : 24-12-2013
 
-* Last Modified : Tuesday 24 December 2013 11:50:05 AM IST
+* Last Modified : Tuesday 24 December 2013 01:16:24 PM IST
 
 * Created By : npsabari
 
@@ -53,7 +53,7 @@ using namespace std;
 #define sqr(x) ((x)*(x))
 
 #define MOD 1000000007
-#define MAXN 100010
+#define MAXN 18 
 #define MAXBUF 5000000
 #define EPS 1e-9
 #define NIL 0
@@ -92,50 +92,44 @@ using namespace std;
 #define READ(f) freopen(f, "r", stdin)
 #define WRITE(f) freopen(f, "w", stdout)
 
-#define MAXL 1000000000000000000LL // Check for overflow
-#define debug
+#define MASK (1LL<<MAXN)
 
-ll pow(ll a, int k) {
-    ll ret = 1;
-    ll aa = a;
-    while(k) {
-        if(k&1) ret *= a;
-#ifdef debug
-        if(a > MAXL || a < 0) assert(false);
-#endif
-        k >>= 1; a *= a;
+int adj[MAXN][MAXN];    // Vertices are 0-indexed wrt each partite
+int n;  // Each partite has n vertices
+
+ll store[MASK];
+
+// uses Ryser's formula for finding permanent of a matrix
+ll get_count() {
+    ll tmp, sum;
+    int bit_cnt;
+    REP(sub_idx, (1LL<<n)){
+        store[sub_idx] = 1;
+        REP(i, n){
+            sum = 0;
+            REP(j, n) if(sub_idx & (1LL<<j)) sum = FIXMOD(sum+adj[i][j]);
+            store[sub_idx] = FIXMOD(store[sub_idx]*sum); 
+        }
+
+        bit_cnt = 0;
+        tmp = sub_idx;
+        while(tmp) {bit_cnt += (tmp&1); tmp >>= 1;}
+        if(bit_cnt&1) store[sub_idx] = FIXMOD(store[sub_idx]*(-1));
     }
-    return ret;
-}
-
-bool a_check(ll& num, int& b) {
-    ll hi = pow(2, ceil(log2(num)/b)), lo = 2;
-    ll m = (hi+lo)>>1;
-    int iter = 35;
-    ll tmp_pow;
-    while(iter-- && lo < hi) {
-        m = (lo+hi)>>1;
-        tmp_pow = pow(m, b);
-        if(tmp_pow == num) return true;
-        if(tmp_pow > 0 && tmp_pow < num) lo = m;
-        else hi = m;
-    }
-    return pow(lo, b) == num || pow(hi, b) == num;
-}
-
-bool a_b_check(ll& num) {
-    int end = log2(num) + 1;
-    FORab(b, 2, end) if(a_check(num, b)) return true;
-    return false;
+    ll sol = 0;
+    REP(sub_idx, (1LL<<n)) sol = FIXMOD(sol+store[sub_idx]);
+    if(n&1) sol = FIXMOD(sol*(-1));
+    return sol;
 }
 
 int main() {
-    int t;
-    ll n;
+    int t, m, u, v;
     scanf("%d", &t);
     while(t--) {
-        scanf("%lld", &n);
-        printf("%s\n", a_b_check(n) ? "YES" : "NO");
+        scanf("%d %d", &n, &m);
+        CLR(adj);
+        REP(i, m) {scanf("%d%d", &u, &v); adj[u][v-n] = 1;}
+        printf("%lld\n", get_count());
     }
 	return 0;
 }
