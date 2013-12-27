@@ -4,7 +4,7 @@
 
 * Creation Date : 27-12-2013
 
-* Last Modified : Friday 27 December 2013 03:20:55 PM IST
+* Last Modified : Friday 27 December 2013 03:26:11 PM IST
 
 * Created By : npsabari
 
@@ -125,6 +125,8 @@ bool check_bipartite(int color) {
     label[src] = 1;
     pq.push(src);
 
+    bool trivial = true;    // Trivial graph -- only one node with no edges
+
     while(!pq.empty()) {
         u = pq.front();
         pq.pop();
@@ -133,11 +135,12 @@ bool check_bipartite(int color) {
             if(vis[v] != color) continue;
             if(label[v] == -1){
                 label[v] = 1 - label[u];
+                trivial = false;
                 pq.push(v);
             } else if(label[v] == label[u]) return false;
         }
     }
-    return true;
+    return true && !trivial;
 }
 
 pair<bool, int> connected() {
@@ -185,7 +188,7 @@ int main() {
         
         bool iflag = false;
         FOR1(i, sol.ss) {
-            cout<<"checking "<<i<<endl;
+            //cout<<"checking "<<i<<endl;
             if(check_bipartite(i)){
                 iflag = true;
                 break;
