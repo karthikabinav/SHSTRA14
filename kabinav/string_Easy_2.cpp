@@ -9,7 +9,7 @@ using namespace std;
 /*
  * Input format:
  * t - number of test cases
- *
+ * Two integers n,m sizes of the two strings n and m
  * Each case has two strings and integer which is value of k
  *
  */
@@ -23,10 +23,11 @@ int main()
     while(t--)
     {
        string a,b;
+        int n,m;
+        int k;
+        scanf("%d %d %d",&n,&m,&k);
+
        cin>>a>>b;
-      
-       int k;
-       scanf("%d",&k);
         
        if(k>a.length() || k>b.length())
        {
@@ -34,12 +35,12 @@ int main()
           continue;
        }
         int i,j;
-        for(i=0;i<a.length();i++)
+        for(i=0;i<=a.length();i++)
         {
             fdp[i][0] = 0;
             rdp[i][b.length()+1] = 0;
         }
-        for(i=0;i<b.length();i++)
+        for(i=0;i<=b.length();i++)
         {
             fdp[0][i] = 0;
             rdp[a.length()+1][i] = 0;
@@ -65,11 +66,11 @@ int main()
             }
         }
         int ans = 0;
-        for(i=1;i<a.length()-k;i++) 
+        for(i=1;i<=a.length()-k+1;i++) 
         {
-            for(j=1;j<b.length()-k;j++)
+            for(j=1;j<=b.length()-k+1;j++)
             {
-                ans = max(ans,fdp[i][j]+rdp[i+k+1][j+k+1]);
+                ans = max(ans,fdp[i-1][j-1]+rdp[i+k][j+k]);
             }
         }
         printf("%d\n",ans);
