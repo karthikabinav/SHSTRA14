@@ -31,7 +31,7 @@ int main()
         
        if(k>a.length() || k>b.length())
        {
-          printf("0\n");
+          printf("-1\n");
           continue;
        }
         int i,j;

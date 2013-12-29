@@ -1,0 +1,61 @@
+20
+1 1 1
+a
+a
+1 1 0
+a
+b
+1 1 1
+a
+b
+1 1 0
+a
+a
+2 3 1
+ab
+abc
+2 3 1
+ab
+cab
+5 5 3
+abcde
+acebd
+5 5 3
+abcde
+abhfe
+7 7 1
+abcdefg
+qbcdefg
+7 7 1
+abcdefg
+abcdeft
+7 7 7
+abcdefg
+abcdefg
+7 7 7
+poiuytr
+zxcvbnm
+7 7 6
+abcdefg
+abqdefg
+7 7 6
+abcdefg
+abcdeqg
+7 7 5
+abcdefg
+aqcdeqg
+7 7 4
+abcdefg
+qqcqeqg
+7 7 4
+abcdefg
+qqqqadg
+7 5 6
+abcdefg
+poiuy
+5 7 6
+poiuy
+abcdefg
+10 1 20
+qwertyuiop
+m
