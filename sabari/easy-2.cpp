@@ -12,18 +12,11 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <iterator>
 #include <cctype>
 #include <vector>
-#include <list>
-#include <map>
-#include <set>
 #include <queue>
-#include <deque>
 #include <stack>
-#include <bitset>
 #include <algorithm>
 #include <functional>
-#include <numeric>
 #include <utility>
-#include <sstream>
 #include <iostream>
 #include <iomanip>
 #include <cstdio>
@@ -32,10 +25,9 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <cstring>
 #include <queue>
 #include <ctime>
-#include <cassert>
 #include <climits>
-#include <limits>
 #include <string>
+
 using namespace std;
 
 //Macros
@@ -104,7 +96,13 @@ int main() {
     while(t--) {
         scanf("%d%d%d", &n, &m, &k);
         scanf("%s%s", str1, str2);
-
+        
+        if(k>n || k>m)
+        {
+            cout<<"-1"<<endl;
+            continue;
+        
+        }
         REP(i, n+2) dp[i][0] = rev_dp[i][0] = rev_dp[i][m+1] = 0;
         REP(j, m+2) dp[0][j] = rev_dp[0][j] = rev_dp[n+1][j] = 0;
 
