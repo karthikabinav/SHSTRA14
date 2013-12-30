@@ -4,7 +4,7 @@
 
 * Creation Date : 23-12-2013
 
-* Last Modified : Monday 23 December 2013 06:34:14 PM IST
+* Last Modified : Tuesday 31 December 2013 02:28:31 AM IST
 
 * Created By : npsabari
 
@@ -97,14 +97,9 @@ int main() {
         scanf("%d%d%d", &n, &m, &k);
         scanf("%s%s", str1, str2);
         
-        if(k>n || k>m)
-        {
-            cout<<"-1"<<endl;
-            continue;
-        
-        }
-        REP(i, n+2) dp[i][0] = rev_dp[i][0] = rev_dp[i][m+1] = 0;
-        REP(j, m+2) dp[0][j] = rev_dp[0][j] = rev_dp[n+1][j] = 0;
+        if(k > min(n, m)){printf("-1\n");continue;}
+
+        CLR(dp); CLR(rev_dp)
 
         FOR1(i, n) FOR1(j, m)
             dp[i][j] = max(dp[i-1][j-1] + int(str1[i-1] == str2[j-1]), max(dp[i-1][j], dp[i][j-1]));

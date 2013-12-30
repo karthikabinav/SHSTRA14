@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <string>
 
@@ -35,16 +36,8 @@ int main()
           continue;
        }
         int i,j;
-        for(i=0;i<=a.length();i++)
-        {
-            fdp[i][0] = 0;
-            rdp[i][b.length()+1] = 0;
-        }
-        for(i=0;i<=b.length();i++)
-        {
-            fdp[0][i] = 0;
-            rdp[a.length()+1][i] = 0;
-        }
+        memset(fdp,0,sizeof(fdp));
+        memset(rdp,0,sizeof(rdp));
         for(i=1;i<=a.length();i++)
         {
             for(j=1;j<=b.length();j++)
