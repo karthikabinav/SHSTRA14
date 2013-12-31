@@ -10,7 +10,7 @@
 using namespace std;
 
 #define MAXN 1005
-
+#define eps 0.000000001
 
 vector<int> graph[MAXN];
 bool visited[MAXN];
@@ -109,14 +109,19 @@ int main()
     int n;
     scanf("%d",&n);
 
-    int mat[MAXN][MAXN];
+    double mat[MAXN][MAXN];
     int i,j;
     for(i=0;i<n;i++)
     {
       for(j=0;j<n;j++)
-        scanf("%d",&mat[i][j]);
+        scanf("%lf",&mat[i][j]);
     }
-
+    /*for(i=0;i<n;i++)
+    {
+      for(j=0;j<n;j++)
+        cout<<mat[i][j]<<" ";
+      cout<<endl;
+    }*/
     for(i=0;i<MAXN;i++)
     {
       graph[i].clear();
