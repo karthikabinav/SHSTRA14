@@ -4,7 +4,7 @@
 
 * Creation Date : 24-12-2013
 
-* Last Modified : Friday 27 December 2013 04:23:40 PM IST
+* Last Modified : Tuesday 31 December 2013 03:09:18 PM IST
 
 * Created By : npsabari
 
@@ -53,7 +53,7 @@ using namespace std;
 #define sqr(x) ((x)*(x))
 
 #define MOD 1000000007
-#define MAXN 100
+#define MAXN 305 
 #define MAXBUF 5000000
 #define EPS 1e-9
 #define NIL 0
@@ -98,9 +98,20 @@ using namespace std;
  */
 
 int n, m;   // n - cardinality of action set for player1, m - for player2
-int pay_off[2][MAXN][MAXN];
+ll pay_off[2][MAXN][MAXN];
 int best_response[2][MAXN]; 
 // best_response[i][j] is the best response for player i when other player does jth action
+
+ll powe(ll _a, int b, int M){
+    ll a = _a%M;
+    ll ret = 1LL;
+    while(b){
+        if(b&1) ret = (a*ret)%M;
+        b >>= 1;
+        a = (a*a)%M;
+    }
+    return ret;
+}
 
 int get_best_response(int ply_type, int other_ply_action) {
     int sz = ply_type ? m : n;
@@ -117,24 +128,18 @@ int get_best_response(int ply_type, int other_ply_action) {
 
 int main() {
     int t;
+    ll a1, a2, b1, b2;
+    int M;
     scanf("%d", &t);
     while(t--) {
         scanf("%d%d", &n, &m);
-        REP(i, n) REP(j, m) scanf("%d", &pay_off[0][i][j]);
-        REP(i, m) REP(j, n) scanf("%d", &pay_off[1][i][j]);
+        scanf("%lld%lld%lld%lld%d", &a1, &a2, &b1, &b2, &M);
+
+        FOR1(i, n) FOR1(j, m) pay_off[0][i-1][j-1] = powe(a1*i + a2*j, M-2, M);
+        FOR1(i, m) FOR1(j, n) pay_off[1][i-1][j-1] = powe(b1*i + b2*j, M-2, M);
         
         REP(i, n) best_response[1][i] = get_best_response(1, i);
         REP(i, m) best_response[0][i] = get_best_response(0, i);
-
-        /*
-        cout<<"best response of player 1"<<endl;
-        REP(i, m) cout<<best_response[0][i]<<" ";
-        cout<<endl;
-
-        cout<<"best response of player 2"<<endl;
-        REP(i, n) cout<<best_response[1][i]<<" ";
-        cout<<endl;
-        */
 
         bool iflag = false;
         int sol_idx1, sol_idx2;
@@ -147,7 +152,7 @@ int main() {
             }
             if(iflag) break;
         }
-        if(iflag) printf("%d %d\n", sol_idx1, sol_idx2);
+        if(iflag) printf("%d %d\n", sol_idx1+1, sol_idx2+1);
         else printf("-1\n");
     }
 	return 0;
