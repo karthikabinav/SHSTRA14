@@ -102,8 +102,7 @@ int main()
                 bestResponse[i][j][1] = true;
           }
        }
-       
-        vector< pair<int,int> > Nash;
+        vector< pair<int,int> > Nash; 
         for(i=0;i<n;i++)
         {
             for(j=0;j<m;j++)
@@ -111,10 +110,12 @@ int main()
                 if(bestResponse[i][j][0] && bestResponse[i][j][1])
                 {
                     Nash.push_back(make_pair(i,j));
+                    break;
                 }
             }
+            if(j<m)
+              break;
         }
-        sort(Nash.begin(),Nash.end(),compare);
         if(Nash.size() == 0)
           printf("-1\n");
         else
