@@ -4,7 +4,7 @@
 
 * Creation Date : 24-12-2013
 
-* Last Modified : Wednesday 01 January 2014 02:48:32 PM IST
+* Last Modified : Wednesday 01 January 2014 05:18:41 PM IST
 
 * Created By : npsabari
 
@@ -126,15 +126,15 @@ int main() {
         FOR1(i, n) FOR1(j, m) pay_off[0][i-1][j-1] = powe(a1*i + a2*j, M-2, M);
         FOR1(i, m) FOR1(j, n) pay_off[1][i-1][j-1] = powe(b1*i + b2*j, M-2, M);
         
-        REP(i, n) {
-            ll maxi = pay_off[0][i][0];
-            REP(j, m) maxi = max(pay_off[0][i][j], maxi);
-            REP(j, m) best_response[0][i][j] = (maxi == pay_off[0][i][j]);
+        REP(j, m) {
+            ll maxi = pay_off[0][0][j];
+            REP(i, n) maxi = max(pay_off[0][i][j], maxi);
+            REP(i, n) best_response[0][i][j] = (maxi == pay_off[0][i][j]);
         }
-        REP(i, m) {
+        REP(i, n) {
             ll maxi = pay_off[1][i][0];
-            REP(j, n) maxi = max(pay_off[1][i][j], maxi);
-            REP(j, n) best_response[1][i][j] = (maxi == pay_off[1][i][j]);
+            REP(j, m) maxi = max(pay_off[1][i][j], maxi);
+            REP(j, m) best_response[1][i][j] = (maxi == pay_off[1][i][j]);
         }
 
         bool iflag = false;
