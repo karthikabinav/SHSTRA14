@@ -4,7 +4,7 @@
 
 * Creation Date : 24-12-2013
 
-* Last Modified : Wednesday 01 January 2014 05:22:13 PM IST
+* Last Modified : Wednesday 01 January 2014 05:26:41 PM IST
 
 * Created By : npsabari
 
@@ -125,9 +125,9 @@ int main() {
         }
 
         REP(i, n) {
-            ll maxi = pay_off[0][i][0];
-            REP(j, m) maxi = max(pay_off[0][i][j], maxi);
-            REP(j, m) best_response[0][i][j] = (maxi == pay_off[0][i][j]);
+            ll maxi = pay_off[1][i][0];
+            REP(j, m) maxi = max(pay_off[1][i][j], maxi);
+            REP(j, m) best_response[1][i][j] = (maxi == pay_off[1][i][j]);
         }
 
         bool iflag = false;
