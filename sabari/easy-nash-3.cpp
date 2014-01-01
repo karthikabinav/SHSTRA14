@@ -4,7 +4,7 @@
 
 * Creation Date : 24-12-2013
 
-* Last Modified : Wednesday 01 January 2014 02:19:04 PM IST
+* Last Modified : Wednesday 01 January 2014 02:48:32 PM IST
 
 * Created By : npsabari
 
@@ -93,14 +93,15 @@ using namespace std;
 #define WRITE(f) freopen(f, "w", stdout)
 
 /*
- * For each action of a player, find the best response by the other player
+ * For each action of a player, find the best responses by the other player
  * If a particular action profile is the best response for both the players, then that is nash equilibrium
  */
 
 int n, m;   // n - cardinality of action set for player1, m - for player2
 ll pay_off[2][MAXN][MAXN];
 bool best_response[2][MAXN][MAXN]; 
-// best_response[i][j][k] is true when player i player jth move and other player kth move and both are their correcsponding best responses
+// best_response[i][j][k] is true when player i plays his jth move and other player player his kth move 
+// and both are their correcsponding best responses
 
 ll powe(ll _a, int b, int M){
     ll a = _a%M;
