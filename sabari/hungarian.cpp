@@ -4,7 +4,7 @@
 
 * Creation Date : 02-01-2014
 
-* Last Modified : Thursday 02 January 2014 03:39:25 AM IST
+* Last Modified : Thursday 02 January 2014 03:41:42 AM IST
 
 * Created By : npsabari
 
@@ -228,8 +228,8 @@ int main() {
         }
         construct_graph(min(lo, hi)); ll cost1 = G.get_cost(); 
         construct_graph(max(lo, hi)); ll cost2 = G.get_cost();
-        if(maxcost < cost1 && cost1 > 0) {maxcost = cost1; maxTime = m1;}
-        if(maxcost < cost2 && cost2 > 0) {maxcost = cost2; maxTime = m2;}
+        if(maxcost < cost1 && cost1 > 0) {maxcost = cost1; maxTime = min(lo, hi);}
+        if(maxcost < cost2 && cost2 > 0) {maxcost = cost2; maxTime = max(lo, hi);}
 
         if(maxcost <= 0) printf("%lld %d\n", maxcost, maxTime);
         else printf("-1\n");
