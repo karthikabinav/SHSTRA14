@@ -13,19 +13,11 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <iterator>
 #include <cctype>
 #include <vector>
-#include <list>
-#include <map>
-#include <set>
 #include <queue>
-#include <deque>
 #include <stack>
-#include <bitset>
 #include <algorithm>
 #include <functional>
-#include <numeric>
 #include <utility>
-#include <sstream>
-#include <iostream>
 #include <iomanip>
 #include <cstdio>
 #include <cmath>
@@ -33,10 +25,10 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <cstring>
 #include <queue>
 #include <ctime>
-#include <cassert>
 #include <climits>
-#include <limits>
 #include <string>
+#include <iostream>
+
 using namespace std;
 
 //Macros
@@ -122,10 +114,11 @@ int main() {
     while(t--) {
         scanf("%d%d", &n, &m);
         scanf("%lld%lld%lld%lld%d", &a1, &a2, &b1, &b2, &M);
-
+        
         FOR1(i, n) FOR1(j, m) pay_off[0][i-1][j-1] = powe(a1*i + a2*j, M-2, M);
         FOR1(i, m) FOR1(j, n) pay_off[1][i-1][j-1] = powe(b1*i + b2*j, M-2, M);
         
+
         REP(i, n) {
             ll maxi = pay_off[0][i][0];
             REP(j, m) maxi = max(pay_off[0][i][j], maxi);
@@ -143,13 +136,14 @@ int main() {
             REP(j, m) 
                 if(best_response[0][i][j] && best_response[1][j][i]){
                     iflag = true;
+                    cout<<i<<" "<<j<<endl;
                     sol_idx1 = i, sol_idx2 = j;
-                    break;
+                    //break;
                 }
             if(iflag) break;
         }
-        if(iflag) printf("%d %d\n", sol_idx1+1, sol_idx2+1);
-        else printf("-1\n");
+        /*if(iflag) printf("%d %d\n", sol_idx1+1, sol_idx2+1);
+        else printf("-1\n");*/
     }
 	return 0;
 }
