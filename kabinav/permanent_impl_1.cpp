@@ -1,6 +1,7 @@
 #include <cstdio>
 
-#define MAX 15
+
+#define MAX 20
 #define mod 1000000003 //RG mod
 
 long long permanent(int mat[MAX][MAX],int n)
@@ -63,7 +64,6 @@ int main()
               mat[i][j] = 0; 
            }
         }
-
         for(i=0;i<m;i++)
         {
             int u,v;
