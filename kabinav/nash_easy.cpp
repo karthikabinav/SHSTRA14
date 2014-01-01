@@ -1,7 +1,6 @@
 #include <cstdio>
 #include <algorithm>
 #include <queue>
-#include <iostream>
 
 using namespace std;
 
@@ -116,11 +115,9 @@ int main()
             }
         }
         sort(Nash.begin(),Nash.end(),compare);
-        for(i=0;i<Nash.size();i++)
-          cout<<Nash[i].first<<" "<<Nash[i].second<<endl;
-        /*if(Nash.size() == 0)
+        if(Nash.size() == 0)
           printf("-1\n");
         else
-          printf("%d %d\n",Nash[0].first+1,Nash[0].second+1);*/
+          printf("%d %d\n",Nash[0].first+1,Nash[0].second+1);
     }
 }
