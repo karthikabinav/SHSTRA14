@@ -4,7 +4,7 @@
 
 * Creation Date : 24-12-2013
 
-* Last Modified : Thursday 02 January 2014 01:20:21 AM IST
+* Last Modified : Thursday 02 January 2014 02:09:35 AM IST
 
 * Created By : npsabari
 
@@ -53,7 +53,7 @@ using namespace std;
 #define sqr(x) ((x)*(x))
 
 #define MOD 1000000003
-#define MAXN 18 
+#define MAXN 20 
 #define MAXBUF 5000000
 #define EPS 1e-9
 #define NIL 0
@@ -107,19 +107,19 @@ ll get_count() {
         store[sub_idx] = 1;
         REP(i, n){
             sum = 0;
-            REP(j, n) if(sub_idx & (1LL<<j)) sum = FIXMOD(sum+adj[i][j]);
-            store[sub_idx] = FIXMOD(store[sub_idx]*sum); 
+            REP(j, n) if(sub_idx & (1LL<<j)) sum = sum+adj[i][j];
+            store[sub_idx] = store[sub_idx]*sum; 
         }
 
         bit_cnt = 0;
         tmp = sub_idx;
         while(tmp) {bit_cnt += (tmp&1); tmp >>= 1;}
-        if(bit_cnt&1) store[sub_idx] = FIXMOD(store[sub_idx]*(-1));
+        if(bit_cnt&1) store[sub_idx] = store[sub_idx]*(-1);
     }
     ll sol = 0;
-    REP(sub_idx, (1LL<<n)) sol = FIXMOD(sol+store[sub_idx]);
-    if(n&1) sol = FIXMOD(sol*(-1));
-    return sol;
+    REP(sub_idx, (1LL<<n)) sol = sol+store[sub_idx];
+    if(n&1) sol = sol*(-1);
+    return FIXMOD(sol);
 }
 
 int main() {
