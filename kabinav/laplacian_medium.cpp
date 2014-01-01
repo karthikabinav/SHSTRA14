@@ -107,59 +107,33 @@ int main()
   while(t--)
   {
     int n;
-    scanf("%d",&n);
+    scanf("%d %d",&n,&m);
 
-    double mat[MAXN][MAXN];
     int i,j;
-    for(i=0;i<n;i++)
-    {
-      for(j=0;j<n;j++)
-        scanf("%lf",&mat[i][j]);
-    }
-    int k;
-    for(i=0;i<300;i++)
-    {
-        for(j=0;j<300;j++)
-        {
-            for(k=0;k<300;k++)
-            {
-                graph[(i%3 + j%4 + k%5)%n].clear();
-            
-            }
-        
-        }
-    }
-    /*for(i=0;i<n;i++)
-    {
-      for(j=0;j<n;j++)
-        cout<<mat[i][j]<<" ";
-      cout<<endl;
-    }*/
+    
     for(i=0;i<MAXN;i++)
     {
       graph[i].clear();
       visited[i] = false;
     }
     
+    for(i=0;i<m;i++)
+    {
+        int u,v;
+        scanf("%d %d",&u,&v);
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+
+    }
     /*
-     * Note input to the code is a normalized laplacian. It is defined as D^-0.5 L D^ -0.5
+     * Note input to the code is a graph in the form of adjacency list
+     * Generate a normalized laplacian. It is defined as D^-0.5 L D^ -0.5
      * visually:
      * i==j and deg_i \neq 0  => mat[i][j] = 1
      * if i adjacent to j mat[i][j] = -1/sqrt(deg_i*deg_j)
      * o/w  mat[i][j] = 0
      */
-    for(i=0;i<n;i++)
-    {
-      for(j=0;j<n;j++)
-      {
-        if(i==j)
-          continue;
-        else if(mat[i][j] < 0)
-        {
-            graph[i].push_back(j);
-        }
-      }
-    }
+    
     if(oneComponent(n))
       cout<<"NO"<<endl;
     else
@@ -169,6 +143,5 @@ int main()
       else
         cout<<"NO"<<endl;
     }
-
   }
 }
