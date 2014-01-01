@@ -4,7 +4,7 @@
 
 * Creation Date : 24-12-2013
 
-* Last Modified : Tuesday 31 December 2013 03:09:18 PM IST
+* Last Modified : Wednesday 01 January 2014 02:19:04 PM IST
 
 * Created By : npsabari
 
@@ -99,8 +99,8 @@ using namespace std;
 
 int n, m;   // n - cardinality of action set for player1, m - for player2
 ll pay_off[2][MAXN][MAXN];
-int best_response[2][MAXN]; 
-// best_response[i][j] is the best response for player i when other player does jth action
+bool best_response[2][MAXN][MAXN]; 
+// best_response[i][j][k] is true when player i player jth move and other player kth move and both are their correcsponding best responses
 
 ll powe(ll _a, int b, int M){
     ll a = _a%M;
@@ -111,19 +111,6 @@ ll powe(ll _a, int b, int M){
         a = (a*a)%M;
     }
     return ret;
-}
-
-int get_best_response(int ply_type, int other_ply_action) {
-    int sz = ply_type ? m : n;
-    int max_idx = -1, tmp_max = -INF;
-    REP(i, sz) {
-        if(pay_off[ply_type][i][other_ply_action] > tmp_max){
-            tmp_max = pay_off[ply_type][i][other_ply_action];
-            max_idx = i;
-        }
-    }
-    assert(max_idx != -1);
-    return max_idx;
 }
 
 int main() {
@@ -138,18 +125,26 @@ int main() {
         FOR1(i, n) FOR1(j, m) pay_off[0][i-1][j-1] = powe(a1*i + a2*j, M-2, M);
         FOR1(i, m) FOR1(j, n) pay_off[1][i-1][j-1] = powe(b1*i + b2*j, M-2, M);
         
-        REP(i, n) best_response[1][i] = get_best_response(1, i);
-        REP(i, m) best_response[0][i] = get_best_response(0, i);
+        REP(i, n) {
+            ll maxi = pay_off[0][i][0];
+            REP(j, m) maxi = max(pay_off[0][i][j], maxi);
+            REP(j, m) best_response[0][i][j] = (maxi == pay_off[0][i][j]);
+        }
+        REP(i, m) {
+            ll maxi = pay_off[1][i][0];
+            REP(j, n) maxi = max(pay_off[1][i][j], maxi);
+            REP(j, n) best_response[1][i][j] = (maxi == pay_off[1][i][j]);
+        }
 
         bool iflag = false;
         int sol_idx1, sol_idx2;
         REP(i, n) {
             REP(j, m) 
-                if(best_response[0][j] == i && best_response[1][i] == j){
-                iflag = true;
-                sol_idx2 = j, sol_idx1 = i;
-                break;
-            }
+                if(best_response[0][i][j] && best_response[1][j][i]){
+                    iflag = true;
+                    sol_idx1 = i, sol_idx2 = j;
+                    break;
+                }
             if(iflag) break;
         }
         if(iflag) printf("%d %d\n", sol_idx1+1, sol_idx2+1);
