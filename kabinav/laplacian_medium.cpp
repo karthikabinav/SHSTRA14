@@ -116,6 +116,19 @@ int main()
       for(j=0;j<n;j++)
         scanf("%lf",&mat[i][j]);
     }
+    int k;
+    for(i=0;i<300;i++)
+    {
+        for(j=0;j<300;j++)
+        {
+            for(k=0;k<300;k++)
+            {
+                graph[(i%3 + j%4 + k%5)%n].clear();
+            
+            }
+        
+        }
+    }
     /*for(i=0;i<n;i++)
     {
       for(j=0;j<n;j++)
@@ -142,7 +155,9 @@ int main()
         if(i==j)
           continue;
         else if(mat[i][j] < 0)
-          graph[i].push_back(j);
+        {
+            graph[i].push_back(j);
+        }
       }
     }
     if(oneComponent(n))
