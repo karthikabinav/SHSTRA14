@@ -1,4 +1,7 @@
 #include <cstdio>
+#include <algorithm>
+
+using namespace std;
 
 #define MAX 1000
 
@@ -14,6 +17,7 @@ int main()
         scanf("%d",&n);
        
         long long c_i[MAX],P_i[MAX];
+        long long cumxor[MAX];
 
         int i;
         for(i=0;i<n;i++)
@@ -46,10 +50,38 @@ int main()
                 else
                     r = r-(r/cur_div+1);
             }
+            if(i==0)
+              cumxor[i] = cnt;
+            else
+              cumxor[i] = cumxor[i-1]^cnt;
         }
-        if(cnt!=0)
+        
+        sort(cumxor,cumxor+n);
+
+        int ans = 0;
+        for(i=0;i<n;i++)
+        {
+            if(cumxor[i] == 0)
+              ans++;
+        }
+        long long prev = cumxor[0];
+        for(i=0;i<n;)
+        {
+            int tcnt = 0;
+            while(cumxor[i] == prev && i<n)
+            {
+                tcnt++;
+                i++;
+            }
+            ans+=(tcnt*(tcnt-1))/2; 
+            if(i<n)
+              prev = cumxor[i];
+        }
+
+        /*if(cnt!=0)
           printf("YES\n");
         else
-          printf("NO\n");
+          printf("NO\n");*/
+        printf("%d\n",ans);
     }
 }
