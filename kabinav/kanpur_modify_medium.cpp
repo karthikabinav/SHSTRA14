@@ -1,3 +1,8 @@
+/* 
+ *  Vertices are numbered from 0 .. n-1
+ *
+ */
+
 #include <cstdio>
 #include <queue>
 #include <algorithm>
@@ -5,7 +10,7 @@
 
 using namespace std;
 
-#define MAXN 5005
+#define MAXN 505
 #define mp make_pair
 
 vector< int> graph[MAXN];
@@ -41,7 +46,7 @@ int main()
 {
   int t;
   scanf("%d",&t);
-
+  
   while(t--)
   {
     int n,m;
