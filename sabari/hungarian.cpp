@@ -4,7 +4,7 @@
 
 * Creation Date : 02-01-2014
 
-* Last Modified : Thursday 02 January 2014 03:41:42 AM IST
+* Last Modified : Thursday 02 January 2014 06:50:35 PM IST
 
 * Created By : npsabari
 
@@ -60,7 +60,7 @@ using namespace std;
 #define EPS 1e-9
 #define NIL 0
 #define INF (INT_MAX/2)
-#define LLINF 10000000000000LL
+#define LLINF 100000000000000LL
 #define NEWLINE '\n'
 
 #define SET(A) memset(A, 1,sizeof(A));                     //NOTE: Works only for x = 0 and -1. Only for integers.
@@ -93,8 +93,6 @@ using namespace std;
 
 #define READ(f) freopen(f, "r", stdin)
 #define WRITE(f) freopen(f, "w", stdout)
-
-int MAX_COST = INF;
 
 ll cost[MAXN][MAXN];
 int nNode;
@@ -181,58 +179,85 @@ struct hungarian {
         ll ret = 0;
         REP(i, nNode)
             ret += cost[i][Lmate[i]];
-        return ret > MAX_COST ? -1 : ret;
+        return ret;
     }
 };
 
-ll a_arr[MAXE], b_arr[MAXE];
+ll a_arr[MAXE], b_arr[MAXE], c_arr[MAXE], d_arr[MAXE];
 int road_param[MAXN][MAXN];
 
-void construct_graph(int time) {
+void construct_graph(int time, bool iflag=false) {
     REP(i, nNode) REP(j, nNode) cost[i][j] = LLINF;
     int v;
     REP(i, nNode) REP(j, nNode) {
         v = road_param[i][j];
-        if(v != -1) cost[i][j] = a_arr[v] + b_arr[v]*time;
+        if(v != -1) {
+            cost[i][j] = (a_arr[v]+b_arr[v]*time >= 0) ? 0 : LLINF;
+            if(iflag && cost[i][j] == 0) // here cost[i][j] == 0 check is unnecessary
+                cost[i][j] = max(c_arr[v] + d_arr[v]*time, 0LL);
+        }
     }
 }
 
+#define MAXTIME 1000000000
+
 int main() {
     int T;
-    int u, v, co, n, m;
+    int u, v, co, n, m, K;
     scanf("%d", &T);
     while(T--) {
-        scanf("%d %d %d", &n, &m, &MAX_COST);
+        MEM(road_param, -1);
+        scanf("%d %d %d", &n, &m, &K);
         nNode = n;
-        REP(i, m) {scanf("%d %d %lld %lld", &u, &v, a_arr+i, b_arr+i); road_param[u-1][v-1] = i;}
+        REP(i, m) {
+            scanf("%d%d%lld%lld%lld%lld", &u, &v, a_arr+i, b_arr+i, c_arr+i, d_arr+i); 
+            road_param[u-1][v-1] = i;
+        }
 
-        int hi = 1000000;
+        int hi = MAXTIME;
         int lo = 0;
-        int m1, m2; int iter = 25;
+        int mi; int iter = 35;
+        ll cost1;
+        
+        int sol = INF;
 
-        ll maxcost = -1;
-        int maxTime = -1;
         hungarian G;
         
-        // ternary search
-        while(lo < hi && iter--){
-            m1 = lo+(hi-lo)/3; m2 = hi-(hi-lo)/3;
-            construct_graph(m1); ll cost1 = G.get_cost();
-            construct_graph(m2); ll cost2 = G.get_cost();
-            if(maxcost < cost1 && cost1 > 0) {maxcost = cost1; maxTime = m1;}
-            if(maxcost < cost2 && cost1 > 0) {maxcost = cost2; maxTime = m2;}
-
-            if(cost1 < cost2)
-                lo = m1;
-            else hi = m2;
+        // binary search
+        while(lo <= hi){
+            mi = (lo+hi)>>1;
+            construct_graph(mi); cost1 = G.get_cost();
+            if(cost1 == 0) {hi = mi-1; sol = mi;}
+            else lo = mi+1;
         }
-        construct_graph(min(lo, hi)); ll cost1 = G.get_cost(); 
-        construct_graph(max(lo, hi)); ll cost2 = G.get_cost();
-        if(maxcost < cost1 && cost1 > 0) {maxcost = cost1; maxTime = min(lo, hi);}
-        if(maxcost < cost2 && cost2 > 0) {maxcost = cost2; maxTime = max(lo, hi);}
 
-        if(maxcost <= 0) printf("%lld %d\n", maxcost, maxTime);
-        else printf("-1\n");
+        if(sol == INF) {printf("-1\n"); continue;}
+
+        REP(i, n) REP(j, n){
+            int &val = road_param[i][j];
+            if(val != -1 && a_arr[val] + b_arr[val]*sol < 0) val = -1;
+        }
+
+        lo = sol;
+        hi = MAXTIME;
+        ll maxcost = -1;
+        int maxTime = INF;
+
+        while(lo <= hi){
+            mi = (lo+hi)>>1;
+            construct_graph(mi, true); cost1 = G.get_cost();
+            if(cost1 <= K) {
+                hi = mi-1; 
+                if(maxcost < cost1 || (maxcost == cost1 && maxTime > mi)){ 
+                    maxcost = cost1; maxTime = mi;
+                }
+            }
+            else lo = mi+1;
+        }
+        if(maxcost == -1) {printf("-1\n"); continue;}
+
+        assert(maxcost != -1 && maxTime != -1 && sol != INF);
+        printf("%d %lld %d\n", sol, maxcost, maxTime);
     }
 	return 0;
 }
