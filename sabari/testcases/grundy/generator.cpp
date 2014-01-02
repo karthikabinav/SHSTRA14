@@ -1,10 +1,10 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : med-easy-grundy.cpp
+* File Name : generator.cpp
 
-* Creation Date : 23-12-2013
+* Creation Date : 02-01-2014
 
-* Last Modified : Friday 03 January 2014 04:27:22 AM IST
+* Last Modified : Friday 03 January 2014 04:27:06 AM IST
 
 * Created By : npsabari
 
@@ -92,53 +92,70 @@ using namespace std;
 #define READ(f) freopen(f, "r", stdin)
 #define WRITE(f) freopen(f, "w", stdout)
 
-ll c_i[MAXN], P_i[MAXN], C_i[MAXN], grundy_store[MAXN];
 int MOD_FLOOR = 4;
 
+ll get_grundy(ll num, int idx){
+    idx = idx%MOD_FLOOR+1;
+    while(num >= idx){
+        if(num%idx == 0) return num/idx;
+        num = num - num/idx -1;
+    }
+    return 0;
+}
+
+int num_files = 7;
+int max_cases = 10;
+
+ll max_P[MAXN];
+
+#define MAXE 100000000000000000LL
+
+ll get_num(ll num, int idx) {
+    int mod_cnt = idx%MOD_FLOOR + 1;
+    ll to_ret = 0;
+    int bit_size = 60;  // number of bits needed to represent MAXE
+    REP(i, bit_size) if((num & (1LL<<i))) to_ret |= (1LL<<i);
+    assert(to_ret^num == 0);
+    if(to_ret*mod_cnt > max_P[idx]){return (int)rand()%(max_P[idx]+1);}
+    assert(max_P[idx] >= to_ret*mod_cnt);
+    return (max_P[idx] - to_ret*mod_cnt);
+}
+
+#define MIN_VAL 100000000000000LL
+#define DIFF (MAXE-MIN_VAL)
+
 int main() {
-    int t, n;
-    ll num, prev;
-    int cnt;
-    ll sol;
-    int idx;
-    scanf("%d", &t);
-    while(t--) {
-        scanf("%d %d", &n, &MOD_FLOOR);
-        FOR1(i, n) scanf("%lld", c_i+i);
-        FOR1(i, n) scanf("%lld", P_i+i);
-       // Transforming to good old n-piles game, with removing coins as action
-        FOR1(i, n) {
-            C_i[i] = P_i[i] - c_i[i];
-        }
-        
-        CLR(grundy_store);
+    srand(time(NULL));
 
-        // Computing XORs
-        FOR1(i, n) {
-            num = C_i[i];
-            idx = (i-1)%MOD_FLOOR+1;
-            if(num < idx) continue;
-            while(num >= idx) {
-                if(num%idx == 0) {grundy_store[i] = num/idx; break;}
-                num = num-num/idx-1;
+    FILE* fp;
+    int npiles, kprime;
+    ll val, xor_val;
+    REP(file_idx, num_files){
+        stringstream ss;
+        ss<<"grundy_in_"<<file_idx;
+        fp = fopen(ss.str().c_str(), "w");
+        cout<<"Starting "<<file_idx<<" file"<<endl;
+        fprintf(fp, "%d\n", max_cases);
+
+        bool iflag;
+        REP(cases, max_cases) {
+            if(rand()%100 == 50) iflag = true;   // One in hundred the player 1 looses completely
+            else iflag = false;
+            npiles = rand()%(MAXN-10+1);
+            MOD_FLOOR = rand()%10 + 1;
+            fprintf(fp, "%d %d\n", npiles, MOD_FLOOR);
+            xor_val = 0;
+            REP(i, npiles)  max_P[i] = rand()%DIFF + MIN_VAL;
+            REP(i, npiles) {
+                kprime = rand()%10;
+                if(iflag || kprime < 7) val = get_num(xor_val, i);
+                else val = rand()%(max_P[i]+1);
+                fprintf(fp, "%lld%c", val, (i == npiles-1) ? '\n' : ' ');
+                xor_val ^= get_grundy(max_P[i]-val, i);
             }
+            REP(i, npiles)  fprintf(fp, "%lld%c", max_P[i], (i == npiles-1) ? '\n' : ' ');
         }
-        
-        //According the Grundy number theorem, iff grundy = 0, it is a losing position
-
-        sort(grundy_store, grundy_store+n+1);
-        grundy_store[n+1] = grundy_store[n]+1;
-
-        sol = n*(ll)(n+1)/2; cnt=0; prev = -1;
-
-        REP(i, n+2) {
-            if(prev == grundy_store[i]) cnt++;
-            else {sol -= cnt*(ll)(cnt-1)/2; cnt = 1;}
-            prev = grundy_store[i];
-        }
-
-        // Print number of i, j such that player 1 will win
-        printf("%lld\n", sol);
+        fclose(fp);
     }
 	return 0;
 }
