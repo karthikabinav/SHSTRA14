@@ -1,7 +1,6 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
-#include <cstdio>
 
 using namespace std;
 
@@ -22,8 +21,7 @@ int main()
   while(cnt<20)
   {
     int i,j;
-    int n = 300;
-    cout<<n<<endl;
+    int n = 300 - cnt;
     
   for(i=0;i<n;i++)
   {
@@ -44,7 +42,7 @@ int main()
               if(r==0)
                 c0++;
           }
-          if(c0>35) 
+          if(c0>400 - 16*cnt) 
             graph[i][j] = graph[j][i] = 0;
           else
           {
@@ -55,30 +53,7 @@ int main()
       }
     
     }
-
-    for(i=n/3;i<(2*n)/3;i++)
-    {
-      for(j=i+1;j<(2*n)/3;j++)
-      {
-          int k = 500;
-          int c0 = 0;
-          while(k--)
-          {
-              int r = rand()%2;
-              if(r==0)
-                c0++;
-          }
-          if(c0>300) 
-            graph[i][j] = graph[j][i] = 0;
-          else
-          {
-              graph[i][j] = graph[j][i] = 1;
-              deg[i]++;
-              deg[j]++;
-          }
-      }
-    }
-    for(i=(2*n/3);i<n;i++)
+    for(i=n/2;i<n;i++) 
     {
       for(j=i+1;j<n;j++)
       {
@@ -90,7 +65,7 @@ int main()
               if(r==0)
                 c0++;
           }
-          if(c0>50) 
+          if(c0>100 + 16*cnt) 
             graph[i][j] = graph[j][i] = 0;
           else
           {
@@ -99,14 +74,17 @@ int main()
               deg[j]++;
           }
       }
+    
     }
-    //Generate the Laplacian
 
+
+            //Generate the Laplacian
+    int m=0;
     for(i=0;i<n;i++)
     {
-        for(j=0;j<n;j++)
+        for(j=i+1;j<n;j++)
         {
-            if(i==j)
+            /*if(i==j)
             {
                 if(deg[i]==0)
                   laplacian[i][j] = 0;
@@ -117,16 +95,21 @@ int main()
             else if(graph[i][j] == 0)
               laplacian[i][j] = 0;
             else
-              laplacian[i][j] = -1/sqrt(deg[i]*deg[j]);
+              laplacian[i][j] = -1/sqrt(deg[i]*deg[j]);*/
+            if(graph[i][j] !=0)
+              m++;
         }
     }
+    cout<<n<<" "<<m<<endl;
     // Output the Laplacian
     for(i=0;i<n;i++)
     {
-        for(j=0;j<n;j++)
-          printf("%0.6lf ",laplacian[i][j]);
-        printf("\n");
-    
+        for(j=i+1;j<n;j++)
+        {
+            if(graph[i][j]!=0)
+              cout<<i<<" "<<j<<endl;
+        
+        } 
     }
 
     cnt++;

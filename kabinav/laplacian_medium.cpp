@@ -106,7 +106,7 @@ int main()
 
   while(t--)
   {
-    int n;
+    int n,m;
     scanf("%d %d",&n,&m);
 
     int i,j;
