@@ -27,6 +27,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <ctime>
 #include <climits>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -124,7 +125,7 @@ int main() {
 
         REP(i, n+2) {
             if(prev == grundy_store[i]) cnt++;
-            else {sol -= cnt*(ll)(cnt-1)/2; cnt = 1;}
+            else {cout<<cnt<<endl;sol -= cnt*(ll)(cnt-1)/2; cnt = 1;}
             prev = grundy_store[i];
         }
 
