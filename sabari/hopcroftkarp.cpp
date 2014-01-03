@@ -4,7 +4,7 @@
 
 * Creation Date : 02-01-2014
 
-* Last Modified : Friday 03 January 2014 02:32:14 PM IST
+* Last Modified : Friday 03 January 2014 04:10:36 PM IST
 
 * Created By : npsabari
 
@@ -53,7 +53,7 @@ using namespace std;
 #define sqr(x) ((x)*(x))
 
 #define MOD 1000000007
-#define MAXN 1010
+#define MAXN 410
 #define MAXE (MAXN*MAXN) 
 #define MAXBUF 5000000
 #define EPS 1e-9
@@ -161,7 +161,7 @@ void construct_graph(int time) {
     int nNode = N+M+1;
     REP(i, nNode) G[i].clear();
     int v;
-    REP(i, N) REP(j, M) {
+    REP(i, N) REP(j, N) {
         v = road_param[i][j];
         if(v != -1 && a_arr[v]+b_arr[v]*time >= 0) G[i+1].pb(j+N+1);
     }
@@ -176,6 +176,7 @@ ll get_cost(int time) {
     int v;
     ll cost;
     REP(i, N) {
+        assert(matches[i] >= 0);
         v = road_param[i][matches[i]];
         cost = c_arr[v] + d_arr[v]*time;
         to_ret += (cost > 0 ? cost : 0);
@@ -207,22 +208,25 @@ int main() {
         while(lo <= hi){
             mi = (lo+hi)>>1;
             construct_graph(mi); cost1 = hopcroft_karp();
-            if(cost1 == n) {hi = mi-1; sol = mi;}
+            if(cost1 == n) {hi = mi-1; sol = min(mi, sol);}
             else lo = mi+1;
         }
 
         if(sol == INF) {printf("-1\n"); continue;}
 
+        construct_graph(sol);assert(hopcroft_karp() == n);
         REP(i, n) matches[i] = match[i+1] - N-1;
+        /* 
         REP(i, n) {
             cout<<"Match for "<<i<<" is "<<matches[i]<<endl;
-        }
+        }*/
 
         lo = sol;
         hi = MAXTIME;
         ll maxcost = -1;
         int maxTime = INF;
 
+        // Binary search for cost
         while(lo <= hi){
             mi = (lo+hi)>>1;
             cost1 = get_cost(mi-sol);
@@ -234,7 +238,7 @@ int main() {
             }
             else lo = mi+1;
         }
-        if(maxcost == -1) {printf("-1\n"); continue;}
+        if(maxcost <= 0) {printf("-1\n"); continue;}
 
         assert(maxcost != -1 && maxTime != -1 && sol != INF);
         printf("%d %lld %d\n", sol, maxcost, maxTime);
