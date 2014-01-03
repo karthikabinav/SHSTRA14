@@ -58,7 +58,6 @@ int main()
             else
               cumxor[i] = cumxor[i-1]^cnt;
         }
-        
         sort(cumxor,cumxor+n);
        
         //for(i=0;i<n;i++)
