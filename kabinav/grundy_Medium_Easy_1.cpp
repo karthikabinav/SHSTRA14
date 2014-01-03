@@ -3,7 +3,10 @@
 
 using namespace std;
 
-#define MAX 1000
+#define MAX 500005
+
+long long c_i[MAX],P_i[MAX];
+long long cumxor[MAX];
 
 int main()
 {
@@ -14,11 +17,10 @@ int main()
     {
         long long cnt = 0;
         int n;
-        scanf("%d",&n);
+        int K;
+        scanf("%d %d",&n,&K);
        
-        long long c_i[MAX],P_i[MAX];
-        long long cumxor[MAX];
-
+        
         int i;
         for(i=0;i<n;i++)
           scanf("%lld",&c_i[i]);
@@ -32,7 +34,7 @@ int main()
             long long r;
             r = c_i[i];
             
-            long long cur_div = i+1;
+            long long cur_div = i%K+1;
             while(true)
             {
                 if(r<cur_div)
@@ -58,16 +60,17 @@ int main()
         
         sort(cumxor,cumxor+n);
 
-        int ans = 0;
+        long long  ans = 0;
         for(i=0;i<n;i++)
         {
             if(cumxor[i] == 0)
               ans++;
         }
         long long prev = cumxor[0];
-        for(i=0;i<n;)
+        i = 0;
+        while(i<n)
         {
-            int tcnt = 0;
+            long long  tcnt = 0;
             while(cumxor[i] == prev && i<n)
             {
                 tcnt++;
@@ -82,6 +85,6 @@ int main()
           printf("YES\n");
         else
           printf("NO\n");*/
-        printf("%d\n",ans);
+        printf("%lld\n",((long long)n*(n+1))/2-ans);
     }
 }

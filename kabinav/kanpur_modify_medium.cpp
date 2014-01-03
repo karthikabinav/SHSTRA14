@@ -1,5 +1,5 @@
 /* 
- *  Vertices are numbered from 0 .. n-1
+ *  Vertices are numbered from 1 .. n
  *
  */
 
@@ -56,7 +56,7 @@ int main()
     for(i=0;i<MAXN;i++)
     {
       graph[i].clear();
-      degrees[i] = mp(0,0);
+      degrees[i] = mp(0,i);
       type[i] = 3;
     }
 
@@ -119,7 +119,7 @@ int main()
     {
         if(type[degrees[i].second] == 1)
         {
-            ldegree[i] = degrees[i].first;
+            ldegree[tot] = degrees[i].first;
             tot++;
         }
     }
@@ -127,12 +127,15 @@ int main()
     preSum[0] = ldegree[0];
     for(i=1;i<tot;i++)
       preSum[i] = preSum[i-1] + ldegree[i];
-    sufSum[n-1] = ldegree[tot-1];
+
+    sufSum[tot-1] = ldegree[tot-1];
     for(i=tot-2;i>=0;i--)
       sufSum[i] = sufSum[i+1] + ldegree[i];
-
+    
+    bool br = true;
     for(i=0;i<tot;i++)
     {
+        br = false;
         int sub;
         if(i == 0)
           sub = 0;
@@ -140,9 +143,12 @@ int main()
           sub = preSum[i-1];
         
         if(sufSum[i]-sub == (tot-i)*(tot-i-1)) 
+        {
+            br = true; 
             break;
+        }
     }
-    if(i == n)
+    if(!br)
     {
         cout<<"NO"<<endl;
         continue;
@@ -158,30 +164,35 @@ int main()
     {
         if(type[degrees[i].second] == 2)
         {
-            ldegree[i] = degrees[i].first;
+            ldegree[tot] = degrees[i].first;
             tot++;
         }
     }
-    
     preSum[0] = ldegree[0];
     for(i=1;i<tot;i++)
       preSum[i] = preSum[i-1] + ldegree[i];
-    sufSum[n-1] = ldegree[tot-1];
+    sufSum[tot-1] = ldegree[tot-1];
     for(i=tot-2;i>=0;i--)
       sufSum[i] = sufSum[i+1] + ldegree[i];
-
+    
+    br = true;
     for(i=0;i<tot;i++)
     {
+        br = false;
         int sub;
         if(i == 0)
           sub = 0;
         else
           sub = preSum[i-1];
         
-        if(sufSum[i]-sub == (tot-i)*(tot-i-1)) 
-            break;
+        if(sufSum[i]-sub == (tot-i-1)*(tot-i)) 
+        {
+          br = true;  
+          break;
+
+        }
     }
-    if(i == n)
+    if(!br)
     {
         cout<<"NO"<<endl;
         continue;
