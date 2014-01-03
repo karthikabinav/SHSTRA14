@@ -13,19 +13,11 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <iterator>
 #include <cctype>
 #include <vector>
-#include <list>
-#include <map>
-#include <set>
 #include <queue>
-#include <deque>
 #include <stack>
-#include <bitset>
 #include <algorithm>
 #include <functional>
-#include <numeric>
 #include <utility>
-#include <sstream>
-#include <iostream>
 #include <iomanip>
 #include <cstdio>
 #include <cmath>
@@ -33,10 +25,9 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <cstring>
 #include <queue>
 #include <ctime>
-#include <cassert>
 #include <climits>
-#include <limits>
 #include <string>
+
 using namespace std;
 
 //Macros

@@ -59,7 +59,7 @@ int main()
         }
         
         sort(cumxor,cumxor+n);
-
+        
         long long  ans = 0;
         for(i=0;i<n;i++)
         {
@@ -81,10 +81,6 @@ int main()
               prev = cumxor[i];
         }
 
-        /*if(cnt!=0)
-          printf("YES\n");
-        else
-          printf("NO\n");*/
-        printf("%lld\n",((long long)n*(n+1))/2-ans);
+       printf("%lld\n",((long long)n*(n+1))/2-ans);
     }
 }
