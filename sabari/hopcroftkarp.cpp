@@ -4,7 +4,7 @@
 
 * Creation Date : 02-01-2014
 
-* Last Modified : Friday 03 January 2014 02:04:38 PM IST
+* Last Modified : Friday 03 January 2014 02:32:14 PM IST
 
 * Created By : npsabari
 
@@ -53,8 +53,7 @@ using namespace std;
 #define sqr(x) ((x)*(x))
 
 #define MOD 1000000007
-#define MAXN 410
-#define MAXN 410
+#define MAXN 1010
 #define MAXE (MAXN*MAXN) 
 #define MAXBUF 5000000
 #define EPS 1e-9
@@ -94,112 +93,95 @@ using namespace std;
 #define READ(f) freopen(f, "r", stdin)
 #define WRITE(f) freopen(f, "w", stdout)
 
-ll cost[MAXN][MAXN];
-int nNode;
-int Lmate[MAXN], Rmate[MAXN];
-ll uCost[MAXN], vCost[MAXN];
-ll dist[MAXN];
-int dad[MAXN], seen[MAXN];
-int mated;
+#define MAX MAXN
 
-struct hungarian {
-    void construct_dual_sol() {
-        REP(i, nNode) {
-            uCost[i] = cost[i][0];
-            FOR1(j, nNode-1) uCost[i] = min(uCost[i], cost[i][j]);
-        }
-        REP(j, nNode) {
-            vCost[j] = cost[0][j] - uCost[0];
-            FOR1(i, nNode-1) vCost[j] = min(vCost[j], cost[i][j] - uCost[i]);
-        }
+vector< int > G[MAX];
+int N, M, match[MAX], dist[MAX];                
+// n : Number of nodes on the left side ; m : on the right side ; e : connections between them
+// graph = NIL[0] U G1[G[1...n]] U G2[G[n+1...n+m]]
+
+bool bfs(){
+    int i, u, v, len;
+    queue<int> pq;
+    for( i = 1; i <= N; ++i){
+        if( match[i] == NIL)
+            dist[i] = 0, pq.push(i);
+        else
+            dist[i] = INF;
     }
-
-    void construct_primal_sol() {
-        MEM(Lmate, -1); MEM(Rmate, -1);
-        mated = 0;
-        REP(i, nNode) {
-            REP(j, nNode) {
-                if(Rmate[j] != -1) continue;
-                if(cost[i][j] - uCost[i] - vCost[j] == 0) {
-                    Lmate[i] = j; Rmate[j] = i; ++mated; break;
-                }
+    dist[NIL] = INF;
+    while(!pq.empty()){
+        u = pq.front();
+        pq.pop();
+        if( u != NIL ){
+            len = G[u].size();
+            for( i = 0; i < len; ++i){
+                v = G[u][i];
+                if( dist[match[v]] == INF)
+                    dist[match[v]] = dist[u]+1, pq.push(match[v]);
             }
         }
     }
+    return (dist[NIL] != INF);
+}
 
-    void augment_iter() {
-        while(mated < nNode) {
-            int s = 0;
-            while(Lmate[s] != -1) ++s;
-            MEM(dad, -1); CLR(seen);
-            REP(i, nNode) dist[i] = cost[s][i] - uCost[s] - vCost[i];
-
-            int j = 0;
-            while(true) {
-                j = -1;
-                REP(k, nNode) {
-                    if(seen[k])  continue;
-                    if( j == -1 || dist[k] < dist[j] ) j = k;
-                }
-                seen[j] = 1;
-
-                if(Rmate[j] == -1) break;
-
-                const int i = Rmate[j];
-                REP(k, nNode) {
-                    if(seen[k]) continue;
-                    const ll new_dist = dist[j] + cost[i][k] - uCost[i] - vCost[k];
-                    if(dist[k] > new_dist) dist[k] =  new_dist, dad[k] = j;
-                }
+bool dfs(int u){
+    int i, v, len;
+    if( u != NIL){
+        len = G[u].size();
+        for( i = 0; i < len; ++i){
+            v = G[u][i];
+            if(dist[match[v]] == dist[u]+1 && dfs(match[v])){
+                match[v] = u;
+                match[u] = v;
+                return true;
             }
-
-            REP(k, nNode) {
-                if(k == j || !seen[k]) continue;
-                const int i = Rmate[k];
-                vCost[k] += dist[k] - dist[j];
-                uCost[i] -= dist[k] - dist[j];
-            }
-            uCost[s] += dist[j];
-
-            while(dad[j] >= 0) {
-                const int d = dad[j];
-                Rmate[j] = Rmate[d];
-                Lmate[Rmate[j]] = j;
-                j = d;
-            }
-            Rmate[j] = s;
-            Lmate[s] = j;
-            ++mated;
         }
+        dist[u] = INF;
+        return false;
     }
+    return true;
+}
 
-    ll get_cost() {
-        construct_dual_sol(); construct_primal_sol();
-        augment_iter();
-        ll ret = 0;
-        REP(i, nNode)
-            ret += cost[i][Lmate[i]];
-        return ret;
-    }
-};
+int hopcroft_karp(){
+    memset(dist, 0, sizeof(dist));
+    memset(match, 0, sizeof(match));
+    int i, matching = 0;
+    while( bfs() )
+        for( i = 1; i <= N; ++i)
+            if( match[i] == NIL && dfs(i))
+                ++matching;
+    return matching;
+}
 
 ll a_arr[MAXE], b_arr[MAXE], c_arr[MAXE], d_arr[MAXE];
 int road_param[MAXN][MAXN];
 
-void construct_graph(int time, bool iflag=false) {
-    REP(i, nNode) REP(j, nNode) cost[i][j] = LLINF;
+void construct_graph(int time) {
+    int nNode = N+M+1;
+    REP(i, nNode) G[i].clear();
     int v;
-    REP(i, nNode) REP(j, nNode) {
+    REP(i, N) REP(j, M) {
         v = road_param[i][j];
-        if(v != -1) {
-            cost[i][j] = (a_arr[v]+b_arr[v]*time >= 0) ? 0 : LLINF;
-            if(iflag && cost[i][j] == 0) // here cost[i][j] == 0 check is unnecessary
-                cost[i][j] = max(c_arr[v] + d_arr[v]*time, 0LL);
-        }
+        if(v != -1 && a_arr[v]+b_arr[v]*time >= 0) G[i+1].pb(j+N+1);
     }
 }
 
 #define MAXTIME 1000000000
+
+int matches[MAXN];
+
+ll get_cost(int time) {
+    ll to_ret = 0;
+    int v;
+    ll cost;
+    REP(i, N) {
+        v = road_param[i][matches[i]];
+        cost = c_arr[v] + d_arr[v]*time;
+        to_ret += (cost > 0 ? cost : 0);
+    }
+    return to_ret;
+}
 
 int main() {
     int T;
@@ -208,7 +190,7 @@ int main() {
     while(T--) {
         MEM(road_param, -1);
         scanf("%d %d %d", &n, &m, &K);
-        nNode = n;
+        N = M = n;
         REP(i, m) {
             scanf("%d%d%lld%lld%lld%lld", &u, &v, a_arr+i, b_arr+i, c_arr+i, d_arr+i); 
             road_param[u-1][v-1] = i;
@@ -221,21 +203,19 @@ int main() {
         
         int sol = INF;
 
-        hungarian G;
-        
         // binary search
         while(lo <= hi){
             mi = (lo+hi)>>1;
-            construct_graph(mi); cost1 = G.get_cost();
-            if(cost1 == 0) {hi = mi-1; sol = mi;}
+            construct_graph(mi); cost1 = hopcroft_karp();
+            if(cost1 == n) {hi = mi-1; sol = mi;}
             else lo = mi+1;
         }
 
         if(sol == INF) {printf("-1\n"); continue;}
 
-        REP(i, n) REP(j, n){
-            int &val = road_param[i][j];
-            if(val != -1 && a_arr[val] + b_arr[val]*sol < 0) val = -1;
+        REP(i, n) matches[i] = match[i+1] - N-1;
+        REP(i, n) {
+            cout<<"Match for "<<i<<" is "<<matches[i]<<endl;
         }
 
         lo = sol;
@@ -245,7 +225,7 @@ int main() {
 
         while(lo <= hi){
             mi = (lo+hi)>>1;
-            construct_graph(mi, true); cost1 = G.get_cost();
+            cost1 = get_cost(mi-sol);
             if(cost1 <= K) {
                 hi = mi-1; 
                 if(maxcost < cost1 || (maxcost == cost1 && maxTime > mi)){ 
