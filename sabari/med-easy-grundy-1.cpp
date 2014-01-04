@@ -4,7 +4,7 @@
 
 * Creation Date : 23-12-2013
 
-* Last Modified : Saturday 04 January 2014 02:43:44 PM IST
+* Last Modified : Saturday 04 January 2014 03:40:30 PM IST
 
 * Created By : npsabari
 
@@ -123,11 +123,11 @@ int main() {
 
         grundy_store[n+1] = grundy_store[n]+1;
 
-        sol = n*(ll)(n+1)/2; cnt=1; prev = -1;
+        sol = n*(ll)(n+1)/2; prev = -1; cnt = 0;
 
         REP(i, n+2) {
             if(prev == grundy_store[i]) cnt++;
-            else {cout<<cnt<<endl;sol -= cnt*(ll)(cnt-1)/2; cnt = 1;}
+            else {sol -= cnt*(ll)(cnt-1)/2; cnt = 1;}
             prev = grundy_store[i];
         }
 
