@@ -4,7 +4,7 @@
 
 * Creation Date : 03-01-2014
 
-* Last Modified : Friday 03 January 2014 02:04:01 PM IST
+* Last Modified : Friday 03 January 2014 08:13:23 PM IST
 
 * Created By : npsabari
 
@@ -112,6 +112,8 @@ bool check_components(int co) {
     int cnt = 0;
     REP(i, N) if( comp[degree_lst[i].ss] == co) {store[cnt] = degree_lst[i].ff; cnt++;}
 
+    if(cnt == 0) return true;  // empty component is perfectly fine
+
     cumsum[0] = store[0];
     FOR1(i, cnt-1) cumsum[i] = cumsum[i-1] + store[i];
     revcumsum[cnt-1] = store[cnt-1];
@@ -150,42 +152,48 @@ int main() {
     while(c--) {
         MEM(comp, -1);
         scanf("%d%d", &N, &M);
-        REP(i, N) {adj[i].clear(); degree_lst[i] = mp(0,0);} 
+        REP(i, MAXN) {adj[i].clear(); degree_lst[i] = mp(0,i);} 
         REP(i, M) {
             scanf("%d%d", &u, &v); u--; v--;
             adj[u].pb(v); adj[v].pb(u);
             degree_lst[u].ff++;
-            degree_lst[u].ss = u;
             degree_lst[v].ff++;
-            degree_lst[v].ss = v;
         }
         sort(degree_lst, degree_lst+N);
+        /*
+        REP(i, N){
+            cout<<"Node "<<degree_lst[i].ss<<" degree "<<degree_lst[i].ff<<endl;
+        }
+        */
 
         // Make components
+        v = 0;
         REP(i, N) {
-            if(degree_lst[i].ff == 0) comp[i] = 3;
-            else { 
-                bfs(degree_lst[i].ss, 1);
-                break;
-            }
+            if(degree_lst[i].ff == 0) comp[degree_lst[i].ss] = 3;
+            else break;
+            v++;
         }
-
-        REP(i, N) {
-            if(comp[degree_lst[i].ss] == -1){
-                bfs(degree_lst[i].ss, 2);
-                break;
+        if(v < N) {
+            bfs(degree_lst[v].ss, 1);
+            REP(i, N) {
+                if(comp[degree_lst[i].ss] == -1){
+                    bfs(degree_lst[i].ss, 2);
+                    break;
+                }
             }
         }
 
         bool iflag = false;
         REP(i, N) {
             if(comp[degree_lst[i].ss] == -1){
-                printf("NO\n");
                 iflag = true;
                 break;
             }
         }
-        if(iflag) continue;
+        if(iflag) {
+            printf("NO\n");
+            continue;
+        }
 
         if(check_components(1) && check_components(2)) printf("YES\n");
         else printf("NO\n");

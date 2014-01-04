@@ -4,7 +4,7 @@
 
 * Creation Date : 23-12-2013
 
-* Last Modified : Friday 03 January 2014 04:27:22 AM IST
+* Last Modified : Saturday 04 January 2014 02:43:44 PM IST
 
 * Created By : npsabari
 
@@ -126,10 +126,12 @@ int main() {
         
         //According the Grundy number theorem, iff grundy = 0, it is a losing position
 
+        FOR1(i, n) grundy_store[i] ^= grundy_store[i-1];
         sort(grundy_store, grundy_store+n+1);
+
         grundy_store[n+1] = grundy_store[n]+1;
 
-        sol = n*(ll)(n+1)/2; cnt=0; prev = -1;
+        sol = n*(ll)(n+1)/2; cnt=1; prev = -1;
 
         REP(i, n+2) {
             if(prev == grundy_store[i]) cnt++;

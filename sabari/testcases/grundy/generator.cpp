@@ -4,7 +4,7 @@
 
 * Creation Date : 02-01-2014
 
-* Last Modified : Friday 03 January 2014 04:27:06 AM IST
+* Last Modified : Friday 03 January 2014 07:39:20 PM IST
 
 * Created By : npsabari
 
@@ -148,7 +148,7 @@ int main() {
             REP(i, npiles)  max_P[i] = rand()%DIFF + MIN_VAL;
             REP(i, npiles) {
                 kprime = rand()%10;
-                if(iflag || kprime < 7) val = get_num(xor_val, i);
+                if(iflag || kprime < 8) val = get_num(xor_val, i);
                 else val = rand()%(max_P[i]+1);
                 fprintf(fp, "%lld%c", val, (i == npiles-1) ? '\n' : ' ');
                 xor_val ^= get_grundy(max_P[i]-val, i);

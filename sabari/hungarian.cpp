@@ -4,7 +4,7 @@
 
 * Creation Date : 02-01-2014
 
-* Last Modified : Friday 03 January 2014 02:04:38 PM IST
+* Last Modified : Saturday 04 January 2014 02:22:55 PM IST
 
 * Created By : npsabari
 
@@ -186,15 +186,15 @@ struct hungarian {
 ll a_arr[MAXE], b_arr[MAXE], c_arr[MAXE], d_arr[MAXE];
 int road_param[MAXN][MAXN];
 
-void construct_graph(int time, bool iflag=false) {
+void construct_graph(int time, bool iflag=false, int mi =0) {
     REP(i, nNode) REP(j, nNode) cost[i][j] = LLINF;
     int v;
     REP(i, nNode) REP(j, nNode) {
         v = road_param[i][j];
         if(v != -1) {
             cost[i][j] = (a_arr[v]+b_arr[v]*time >= 0) ? 0 : LLINF;
-            if(iflag && cost[i][j] == 0) // here cost[i][j] == 0 check is unnecessary
-                cost[i][j] = max(c_arr[v] + d_arr[v]*time, 0LL);
+            if(iflag) // here cost[i][j] == 0 check is unnecessary
+                cost[i][j] = max(c_arr[v] + d_arr[v]*(time-mi), 0LL);
         }
     }
 }
@@ -216,7 +216,7 @@ int main() {
 
         int hi = MAXTIME;
         int lo = 0;
-        int mi; int iter = 35;
+        int mi;
         ll cost1;
         
         int sol = INF;
@@ -227,15 +227,15 @@ int main() {
         while(lo <= hi){
             mi = (lo+hi)>>1;
             construct_graph(mi); cost1 = G.get_cost();
-            if(cost1 == 0) {hi = mi-1; sol = mi;}
+            if(cost1 == 0) {hi = mi-1; sol = min(mi, sol);}
             else lo = mi+1;
         }
 
         if(sol == INF) {printf("-1\n"); continue;}
 
         REP(i, n) REP(j, n){
-            int &val = road_param[i][j];
-            if(val != -1 && a_arr[val] + b_arr[val]*sol < 0) val = -1;
+            int val = road_param[i][j];
+            if(val != -1 && a_arr[val] + b_arr[val]*sol < 0) road_param[i][j] = -1;
         }
 
         lo = sol;
@@ -245,7 +245,7 @@ int main() {
 
         while(lo <= hi){
             mi = (lo+hi)>>1;
-            construct_graph(mi, true); cost1 = G.get_cost();
+            construct_graph(mi, true, sol); cost1 = G.get_cost();
             if(cost1 <= K) {
                 hi = mi-1; 
                 if(maxcost < cost1 || (maxcost == cost1 && maxTime > mi)){ 
@@ -254,10 +254,10 @@ int main() {
             }
             else lo = mi+1;
         }
-        if(maxcost == -1) {printf("-1\n"); continue;}
+        if(maxcost <= 0) {printf("-1\n"); continue;}
 
         assert(maxcost != -1 && maxTime != -1 && sol != INF);
-        printf("%d %lld %d\n", sol, maxcost, maxTime);
+        printf("%d %lld %d\n", sol, maxcost, maxTime-sol);
     }
 	return 0;
 }

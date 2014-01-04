@@ -4,7 +4,7 @@
 
 * Creation Date : 02-01-2014
 
-* Last Modified : Friday 03 January 2014 04:10:36 PM IST
+* Last Modified : Friday 03 January 2014 05:52:03 PM IST
 
 * Created By : npsabari
 
@@ -174,12 +174,11 @@ int matches[MAXN];
 ll get_cost(int time) {
     ll to_ret = 0;
     int v;
-    ll cost;
     REP(i, N) {
         assert(matches[i] >= 0);
         v = road_param[i][matches[i]];
-        cost = c_arr[v] + d_arr[v]*time;
-        to_ret += (cost > 0 ? cost : 0);
+        assert(v != -1);
+        to_ret += max(c_arr[v] + d_arr[v]*time, 0LL);
     }
     return to_ret;
 }

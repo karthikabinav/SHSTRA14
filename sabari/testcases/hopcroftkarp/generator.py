@@ -1,8 +1,8 @@
 import random
 
 num_test_files = 7
-MAXN = 2*(10**2)
-MAXE = (10**4)
+MAXN = 10**2
+MAXE = 5000
 LIM1 = 1000000000
 LIM = 100
 
@@ -17,7 +17,7 @@ def main():
     T = [random.randint(10,10) for i in range(num_test_files)]
     for idx, sz in enumerate(T):
         print 'Starting %d' % (idx)
-        with open('karp_in_'+str(idx), 'w') as outfile:
+        with open('karp_in_'+str(idx+num_test_files), 'w') as outfile:
             outfile.write(str(sz)+'\n')
             while sz > 0:
                 n = random.randint(1, MAXN)
