@@ -4,7 +4,7 @@
 
 * Creation Date : 23-12-2013
 
-* Last Modified : Saturday 04 January 2014 02:43:44 PM IST
+* Last Modified : Friday 03 January 2014 07:38:08 PM IST
 
 * Created By : npsabari
 
@@ -27,7 +27,6 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <ctime>
 #include <climits>
 #include <string>
-#include <iostream>
 
 using namespace std;
 
@@ -92,7 +91,7 @@ int main() {
     ll num, prev;
     int cnt;
     ll sol;
-    int idx;
+    long long idx;
     scanf("%d", &t);
     while(t--) {
         scanf("%d %d", &n, &MOD_FLOOR);
@@ -109,7 +108,8 @@ int main() {
         FOR1(i, n) {
             num = C_i[i];
             idx = (i-1)%MOD_FLOOR+1;
-            if(num < idx) continue;
+            if(num < idx) 
+              continue;
             while(num >= idx) {
                 if(num%idx == 0) {grundy_store[i] = num/idx; break;}
                 num = num-num/idx-1;
@@ -117,17 +117,24 @@ int main() {
         }
         
         //According the Grundy number theorem, iff grundy = 0, it is a losing position
-
-        FOR1(i, n) grundy_store[i] ^= grundy_store[i-1];
-        sort(grundy_store, grundy_store+n+1);
-
+        FOR1(i, n) grundy_store[i]^=grundy_store[i-1];
+        sort(grundy_store+1, grundy_store+n+1);
+        
+        //FOR1(i,n)
+        //  cout<<grundy_store[i]<<endl;
         grundy_store[n+1] = grundy_store[n]+1;
 
-        sol = n*(ll)(n+1)/2; cnt=1; prev = -1;
-
-        REP(i, n+2) {
+        sol = n*(ll)(n+1)/2; cnt=0; prev = -1;
+        
+        FOR1(i,n)
+        {
+          if(grundy_store[i] == 0)
+            sol--;
+          
+        }
+        FOR1(i, n+2) {
             if(prev == grundy_store[i]) cnt++;
-            else {cout<<cnt<<endl;sol -= cnt*(ll)(cnt-1)/2; cnt = 1;}
+            else {sol -= cnt*(ll)(cnt-1)/2; cnt = 1;}
             prev = grundy_store[i];
         }
 

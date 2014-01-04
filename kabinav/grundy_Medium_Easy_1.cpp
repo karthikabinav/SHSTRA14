@@ -35,6 +35,7 @@ int main()
             r = c_i[i];
             
             long long cur_div = i%K+1;
+            cnt = 0;
             while(true)
             {
                 if(r<cur_div)
@@ -57,14 +58,17 @@ int main()
             else
               cumxor[i] = cumxor[i-1]^cnt;
         }
-        
         sort(cumxor,cumxor+n);
-
+       
+        //for(i=0;i<n;i++)
+        //  cout<<cumxor[i]<<endl;
         long long  ans = 0;
         for(i=0;i<n;i++)
         {
             if(cumxor[i] == 0)
               ans++;
+            else
+              break;
         }
         long long prev = cumxor[0];
         i = 0;
@@ -81,10 +85,6 @@ int main()
               prev = cumxor[i];
         }
 
-        /*if(cnt!=0)
-          printf("YES\n");
-        else
-          printf("NO\n");*/
-        printf("%lld\n",((long long)n*(n+1))/2-ans);
+       printf("%lld\n",((long long)n*(n+1))/2-ans);
     }
 }
