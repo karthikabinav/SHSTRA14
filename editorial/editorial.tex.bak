@@ -95,11 +95,11 @@ GuruP and his Sweetheart(APOWB)
 \begin{solution}
   This can be modeled as min cost maximum flow problem. The problem has two parts. Given the network of M directed roads and N cities, first find the minimum time at which the network can be decomposed into disjoint cycles. Second part involves finding the maximum of min cost decompositions over a range of time.\\
   
-   Build a bipartite graph $G^{'}$ where every vertex of the original graph $G=(V,E)$ has two copies (one on left part and the other on right). If there is an edge from node u to node v in G, then draw an edge from node u on the left copy to the node v on the right copy of $G^{'}$. G can be decomposed into disjoint cycles iff $G^{'}$ has a perfect matching. Now, the problem of finding the min cost decomposition of G is reduced to finding min cost weighted matching of $G^{'}$.\\
+   Build a bipartite graph $G^{'}$  where every vertex of the original graph $G=(V,E)$ has two copies (one on left part and the other on right). If there is an edge from node u to node v in G, then draw an edge from node u on the left copy to the node v on the right copy of $G^{'}$. G can be decomposed into disjoint cycles iff $G^{'}$ has a perfect matching. Now, the problem of finding the min cost decomposition of G is reduced to finding min cost weighted matching of $G^{'}$.\\
    
    \textbf{Part 1}: To check whether there exists a perfect matching, we can use either Hopcroft-Karp or Hungarian algorithm. It is clear that once a perfect matching is formed, $G^{'}$ always has a perfect matching (as $b_i\geq0$). As this function is monotone, we can binary search for minimum time t($\leq 10^9$) by setting the cost[i][j] to be 0 if the road is construted otherwise INF.\\
    
-   \textbf{Part 2}: Here, the roads that are constructed has non-increasing tax function. Hence the min cost weighted matching of $G^{'}$ is non-increasing function of time t. Now, we again binary search on t, to find the largest min cost weight matching that is less than the given constant. Hungarian algorithm is required as the edges that are part of the perfect matching may change over time.\\
+   \textbf{Part 2}: Here, the roads that are constructed has non-increasing tax function. Hence the min cost weighted matching of $G^{'}$ is non-increasing function of time t. Now, we again binary search on t, to find the largest min cost weight matching that is less than the given constant. Hungarian algorithm is required as the edges, part of perfect matching may change over time.\\
    
    \textbf{Time Complexity: $O(t \ast (n^3 + n^3) \log T_{max}))$} \\
   
@@ -133,11 +133,11 @@ GuruP and his Sweetheart(APOWB)
   Art of Throwing (SHASFUN)
   
 \begin{solution}
-	This problem involves just simulating the problem statement. Given a normal form game, we need to report the first Nash equilibria. The payoff matrix ($n \ast m$) of the game can be obtained using modular exponentiation of the given values. 
+	This problem requires to just simulate what is given in the problem statement. Given a normal form game, we need to report the first Nash equilibria. The payoff matrix ($n \ast m$) of the game can be obtained using modular exponentiation of given values. 
 	
-	A given action set $(A_1, A_2)$ is in nash equilibrium iff the actions of both the players are their best responses for the other player's action. This is same as saying that ``At nash equilibrium, any unilateral deviation by a player would not result in greater payoff for that player". 
+	A given action set $(A_1, A_2)$ is in nash equilibria iff the actions of both the players are their best responses for the other player's action. This is same as saying that ``At nash equilibrium, any unilateral deviation by a player would not result in greater payoff for that player". 
 	
-	We compute the best response for \emph{player i} given the action of \emph{player j}. Note that there can be multiple best responses for a given action. Now just iterate over the normal form game row by row and check whether the given action set are their mutual best responses.\\
+	We compute the best response for \emph{player i} given the action of \emph{player j}. Note that there can be multiple best responses for a given action. Now just iterate over the normal form game row by row and check whether the given action set are the mutual best responses.\\
 	
 	\textbf{Time Complexity}: $O(t \ast (n*m))$ \\
  
@@ -149,7 +149,7 @@ GuruP and his Sweetheart(APOWB)
 
 \begin{solution}
  
- 	The problem involves determining whether a given state of the modified nim game is a winning position for player 1. We can use grundy numbers to solve this problem. In this game, a player can add atmost 
+ 	The problem involves determining whether a given state of the modified nim game is a winning position for player 1. We can use Grundy numbers to solve this problem. In this game, a player can add atmost 
 $\myfloor{(\frac{p_i - c_i}{j})}$ coins to the pile i. Now, this is same as the classical n-piles problem. In other words, player's moves can be viewed as, removing coins from the piles with a upper bound of $\myfloor{(\frac{k_i}{j})}$ where $k_i = p_i - c_i$.\\
 
 	Now, the grundy number of each pile can be calculated using the recursive function.
@@ -176,12 +176,11 @@ $\myfloor{(\frac{p_i - c_i}{j})}$ coins to the pile i. Now, this is same as the 
   Good Boy Eshwar (SHASGRA)
 
 \begin{solution}
-	In this problem we just have to find number of perfect matchings possible in the given bipartite graph. This can be solved using two methods. First involves use of dynamic programming with bitmask. dp[mask] represents the number of matchings possible using the bits set in the mask. This dp can be recursively or iteratively calculated for all subsets of boys. \\
+	In this problem we just have to find number of perfect matchings possible in the given bipartite graph. This can be solved using two methods. Firstly, the classical way to solve this kind of problem is to use dynamic programming with bitmask. dp[mask] represents the number of matchings possible using the bits set in the mask. This dp[mask] can be recursively or iteratively calculated for all subsets of boys. \\
 	
-	The other method is to just find the permanent of the adjacency matrix. This again involves finding the number of ways to match i boys with N girls by iterating over all subsets. Though this method is slower than the dp method, the time limit set high enough for this approach to pass. \\
+	The other method is to just find the permanent of the adjacency matrix. This again involves finding the number of ways to match i boys with N girls by iterating over all subsets. Though this method is slower than the dp method, the time limit set high enough for this approach to pass.
 	
-	\textbf{Time Complexity}: $O(n^2 \ast 2^n)$\\
-	
+	\textbf{Time Complexity}: $O(n^2 \ast 2^n)$
 \end{solution}
 
 \question
@@ -197,9 +196,13 @@ $\myfloor{(\frac{p_i - c_i}{j})}$ coins to the pile i. Now, this is same as the 
     and backward(the third and fourth dimension of this matrix). Using this we can query for a given substring of sring1 and string2 removed in
     constant time. \\
     
-    \textbf{Time Complexity}: $O(t \ast (n^2 + m^2))$. \\
+    \textbf{Time Complexity}: $O(t \ast (n^2 + n^2))$. \\
+     
+     
   
   \end{solution}
+
+
 
 \end{questions}
 \end{document}
