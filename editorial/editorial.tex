@@ -8,18 +8,13 @@
 \newcommand*{\perm}[1][-3mu]{\permcomb[#1]{P}}
 \newcommand*{\comb}[1][-1mu]{\permcomb[#1]{C}}
 
-%\pagestyle{headandfoot}
-%\runningheadrule
-%\firstpageheader{CS6014}{Quiz I}{Sep 6, 2011, 8-8:50am}
-%\runningheader{CS6014}
-%{Quiz I, Page \thepage\ of \numpages}
-%{Sep 6, 2011, 8-8:50am}
-%\firstpagefooter{}{}{}
-%\runningfooter{}{}{}
+\title{Shaastra 2014 Online Programming Contest}
+\author{Karthik Abinav, Sabari NP}
 
 \begin{document}
-
+\maketitle
 \noindent
+
 We hope you all enjoyed the problem statements. Since this was our(npsabari and karthikabinav) first time setting problem statements
 we did have some issues with typos in testcases which led to rejudging. We apologize for that. We will try to give a brief idea about
 solutions we had in mind while setting the problems. \\
@@ -62,7 +57,7 @@ GuruP and his Sweetheart(APOWB)
   complete subgraph, and $T$ as the set with no internal edges. Any vertex in set $T$ will have degree no greater than any vertex in $Q$(easy to see, if not
   try proving). Hence, just sort the degrees and there are n ways to split the vertices into $Q$ and $T$. Check if any of them satisfies the required property.\\
   
-  \textbf{Time Complexity}: $O(t \ast (n^2 \log n))$ \\
+  \textbf{Time Complexity}: $O(t \ast (n + m+ n \log n))$ \\
   
 \end{solution}
 
